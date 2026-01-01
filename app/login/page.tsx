@@ -1,16 +1,19 @@
 "use client";
-import { signInWithPopup } from "firebase/auth";
-import { auth, provider } from "@/lib/firebase";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "@/lib/firebase";
+import Dashboard from "@/components/Dashboard";
 
-export default function Login() {
+export default function Home() {
+  const [user] = useAuthState(auth);
+
+  if (!user) return <p>Loading...</p>;
+
   return (
-    <div className="h-screen flex items-center justify-center">
-      <button
-        onClick={() => signInWithPopup(auth, provider)}
-        className="px-6 py-3 bg-blue-500 text-white rounded-xl"
-      >
-        Sign in with Google
-      </button>
-    </div>
+    <main className="p-6">
+      <h1 className="text-xl font-bold mb-4">
+        Welcome back, {user.displayName?.split(" ")[0]} 👋
+      </h1>
+      <Dashboard />
+    </main>
   );
 }
