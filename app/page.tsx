@@ -1,12 +1,33 @@
-"use client";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/lib/firebase";
 import Dashboard from "@/components/Dashboard";
 
 export default function Home() {
-  const [user] = useAuthState(auth);
+  const [user, loading, error] = useAuthState(auth);
 
-  if (!user) return <p>Loading...</p>;
+  if (loading) {
+    return (
+      <main className="p-6">
+        <p>Loading...</p>
+      </main>
+    );
+  }
+
+  if (error) {
+    return (
+      <main className="p-6">
+        <p>Error: {error.message}</p>
+      </main>
+    );
+  }
+
+  if (!user) {
+    return (
+      <main className="p-6">
+        <p>Please log in to continue.</p>
+      </main>
+    );
+  }
 
   return (
     <main className="p-6">
@@ -14,14 +35,6 @@ export default function Home() {
         Welcome back, {user.displayName?.split(" ")[0]} 👋
       </h1>
       <Dashboard />
-    </main>
-  );
-}import HabitCard from "@/components/HabitCard";
-
-export default function Home() {
-  return (
-    <main className="p-6 grid md:grid-cols-3 gap-4">
-      <HabitCard currentStreak={3} bestStreak={7} />
     </main>
   );
 }
