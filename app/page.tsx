@@ -1,3 +1,6 @@
+export default function Home() {
+  return <h1>Website working</h1>;
+}
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/lib/firebase";
 import Dashboard from "@/components/Dashboard";
